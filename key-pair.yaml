@@ -1,0 +1,20 @@
+---
+ - name: setup key pair
+   hosts: localhost
+   connection: local
+   gather_facts: no
+   tasks: 
+    - name: create key pair
+      ec2_key:
+        name: ansible
+        region: us-east-1
+      register: key_info
+   # - debug:
+     #  msg: "{{key_info}}"
+    - copy:
+       content: "{{key_info}}"
+       dest: "./login_key_info.pem"
+       mode: 0600
+      when: key_info.changed
+
+

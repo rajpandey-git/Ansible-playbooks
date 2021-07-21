@@ -1,0 +1,8 @@
+---
+- name: Install httpd service on remote
+  hosts: 
+  - tasks:
+    service:  
+       name: httpd
+       state: present
+

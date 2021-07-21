@@ -1,0 +1,10 @@
+---
+- name: System Information
+  hosts: controller
+  gather_facts: yes
+    
+  tasks:
+  - name: system architecture
+    debug:
+     var=ansible_architecture
+    

@@ -1,0 +1,19 @@
+---
+- name: Create users with Uid
+  hosts: db
+  gather_facts: no
+  become: yes
+  tasks: 
+  - name: create users with specific Uid
+    user:
+     name: "{{ item.name }}"
+     uid:  "{{ item.uid }}"
+     state: present
+  
+    loop:
+      - name: john
+        uid: 1022
+      - name: Kyndril
+        uid: 4321
+      - name: andrew
+        uid: 2212

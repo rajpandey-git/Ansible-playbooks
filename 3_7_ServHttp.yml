@@ -1,0 +1,14 @@
+---
+- name: install https service
+  hosts: controller
+  gather_facts: no
+  tasks:
+ # - name: To install http service on Controller node
+  #  yum: 
+   #  name: httpd
+    # state: present
+  - name: To Start Httpd service
+    service: 
+     name: httpd
+     state: started
+

@@ -1,0 +1,12 @@
+---
+- name: security group
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+   - name: create new security group
+     local_action:
+       module: ec2_group
+       name: security_group
+       description: security group for new instance
+       region: us-east-1

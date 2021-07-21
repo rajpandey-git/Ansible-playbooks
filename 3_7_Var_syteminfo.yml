@@ -1,0 +1,13 @@
+---
+- name: Get Sysytem Information using variable
+  hosts: controller
+  gather_facts: yes
+  tasks:
+  - name: Alternative way to gather facts about remote hosts
+    setup: filter='ansible_dist*'
+    register: sysinfo
+  - debug:
+     var: sysinfo.ansible_facts.ansible_distribution
+  - shell: echo "{{ sysinfo.ansible_facts.ansible_distribution }}" > /home/rajpandey111/aws_cloud
+   
+   

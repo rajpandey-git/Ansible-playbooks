@@ -1,0 +1,13 @@
+---
+- name: Creating users using loop
+  hosts: controller
+  become: yes
+  gather_facts: no
+  tasks: 
+  - user: 
+     name: "{{ item }}"
+     state: present
+    loop:
+     - joe
+     - raj
+     - dhoni

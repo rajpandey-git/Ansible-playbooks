@@ -1,0 +1,22 @@
+---
+ - name: play to launch ec2 instance
+   hosts: localhost
+   connection: local
+   gather_facts: false
+   tasks: 
+    - name: launce ec2 ubuntu-18 instance
+      ec2: 
+        instance_type: t2.micro
+        image: ami-069137bd6aaaa65ab
+        count: 1
+        region: us-east-1
+        key_name: AMIKEY2
+        group_id: sg-033c910f2715529ba
+        wait: yes
+      register: ec2
+    - name: print all ec2 variables
+      debug: var=ec2
+    - name: get the IP address
+      debug: var=ec2.instances[0].private_dns_name
+
+

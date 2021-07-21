@@ -1,0 +1,8 @@
+---
+- name: to check hosts
+  hosts: all
+  tasks: 
+  - shell: cat /etc/ansible/hosts
+    register: result
+  - debug: 
+      var: result
