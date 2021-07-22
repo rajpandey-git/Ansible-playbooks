@@ -1,0 +1,16 @@
+---
+- name: Error handling play
+  hosts: localhost
+  tasks:
+    - block:
+      - name: Finding files in /home/rajpandey111
+        command: "ls /home/rajpandey111/aws_cud"
+        register: aws_clo
+      rescue:
+       - debug:
+          msg: "This file is not in the location errors are {{aws_clo}}"
+      always:
+       - debug: 
+          msg: "This will always execute"
+
+

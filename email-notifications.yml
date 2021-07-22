@@ -1,0 +1,38 @@
+---
+- name: E-mail sending playbook
+  hosts: localhost
+  become: yes
+  vars: 
+   - gmail_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          31333565616262346130303331623363316563336535316565643239636438653830366463366331
+          6332326164323566653363306361633739653435633736630a646435613664636230363034343836
+          33323562386633303565623732663532336336626130633330643264353737353535623363363066
+          3133353463626237320a323831353864636539393935323862373234306534626539373333656531
+          34346661376433623662633764336563326562643437346336333862373931626563
+  tasks: 
+  - name: Finding files in /home/rajpandey111
+    command: "ls /home/rajpandey111/aws_cud"
+    register: aws_clo
+    ignore_errors: yes
+
+  - name: copying to local system
+    copy: 
+      content: "{{ aws_clo }}"
+      dest: "/home/rajpandey111/aws_cloud/result1.txt"
+
+  - name: mail sending using mail module
+    mail: 
+      host: smtp.gmail.com
+      subtype: html
+      port: 587
+      password: "{{ gmail_password }}"
+      to: avinash.mishra2@ibm.com
+      cc: rajpandey111@yahoo.co.in.com
+      from: raj.pandey2212@gmail.com
+      username: raj.pandey2212@gmail.com
+      subject: Ansible errors
+      body: "Hello from Ansible {{ aws_clo }}" 
+      attach: "/home/rajpandey111/aws_cloud/result1.txt"
+   
+

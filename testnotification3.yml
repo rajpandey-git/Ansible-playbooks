@@ -1,0 +1,11 @@
+---
+- name: send notifications
+  hosts: localhost
+  gather_facts: false
+  vars: commandoutput
+  tasks:
+    - shell: uptime
+      register: "{{ commandoutout }}"
+    - debug:
+        var: command_output  
+

@@ -1,8 +1,11 @@
 ---
 - name: Install httpd service on remote
-  hosts: 
-  - tasks:
-    service:  
+  hosts: dockerhost 
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: install httpd
+    yum:  
        name: httpd
        state: present
 

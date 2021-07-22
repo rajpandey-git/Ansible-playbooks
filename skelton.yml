@@ -1,0 +1,19 @@
+---
+- name: Gathering errors of plabooks
+  hosts: all
+  tasks: 
+    - block:
+       - include_tasks: abc1.yml
+         register: abc1_output
+       - include_tasks: abc2.yml
+         register: abc2_output
+       - include_tasks: abc3.yml
+         register: abc3_output
+       ignore_errors: yes
+     - debug:
+        - var=abc1_output
+        - var=abc2_output
+        - var=abc3_output
+
+
+  
