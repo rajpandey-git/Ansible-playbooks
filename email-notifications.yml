@@ -1,6 +1,7 @@
 ---
 - name: E-mail sending playbook
-  hosts: localhost
+  hosts: controller
+  connection: local
   become: yes
   vars: 
    - gmail_password: !vault |
@@ -10,7 +11,14 @@
           33323562386633303565623732663532336336626130633330643264353737353535623363363066
           3133353463626237320a323831353864636539393935323862373234306534626539373333656531
           34346661376433623662633764336563326562643437346336333862373931626563
-  tasks: 
+  tasks:
+  - name: installing firewalld
+    yum: 
+      name: firewalld
+      state: present
+    register: httpd_report 
+    ignore_errors: yes
+
   - name: Finding files in /home/rajpandey111
     command: "ls /home/rajpandey111/aws_cud"
     register: aws_clo
@@ -20,19 +28,27 @@
     copy: 
       content: "{{ aws_clo }}"
       dest: "/home/rajpandey111/aws_cloud/result1.txt"
+    delegate_to: localhost
+    ignore_errors: yes
 
+  - name: copying to local system
+    copy:
+      content: "{{ httpd_report }}"
+      dest: "/home/rajpandey111/aws_cloud/result1.txt"
+    delegate_to: localhost
+    ignore_errors: yes
   - name: mail sending using mail module
     mail: 
       host: smtp.gmail.com
       subtype: html
       port: 587
       password: "{{ gmail_password }}"
-      to: avinash.mishra2@ibm.com
-      cc: rajpandey111@yahoo.co.in.com
+      to: rajesh.pandey2@ibm.com
+      cc: rajpandey111@yahoo.co.in
       from: raj.pandey2212@gmail.com
       username: raj.pandey2212@gmail.com
       subject: Ansible errors
-      body: "Hello from Ansible {{ aws_clo }}" 
+      body: "Hello from Ansible Errors are:  {{ httpd_report }} and secong errors sre :  {{ aws_clo }} " 
       attach: "/home/rajpandey111/aws_cloud/result1.txt"
    
 
