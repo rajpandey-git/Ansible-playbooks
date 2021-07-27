@@ -1,6 +1,6 @@
 ---
 - name: E-mail sending playbook
-  hosts: controller
+  hosts: localhost
   connection: local
   become: yes
   vars: 
@@ -12,31 +12,28 @@
           3133353463626237320a323831353864636539393935323862373234306534626539373333656531
           34346661376433623662633764336563326562643437346336333862373931626563
   tasks:
-  - name: installing firewalld
-    yum: 
-      name: firewalld
-      state: present
-    register: httpd_report 
+  - name: Email Notifications
+    block:
+    - name: installing firewalld
+      yum:
+        name: firewalld
+        state: present
+      register: httpd_report
+
+    - name: Finding files in /home/rajpandey111
+      command: "ls /home/rajpandey111/aws_cud"
+      register: aws_clo
+
+    - name: copying to local system
+      copy:
+        content: "{ {item }}"
+        dest: "/home/rajpandey111/aws_cloud/result2.txt"
+      loop:
+       - aws_clo
+       - httpd_report
+      delegate_to: localhost
     ignore_errors: yes
 
-  - name: Finding files in /home/rajpandey111
-    command: "ls /home/rajpandey111/aws_cud"
-    register: aws_clo
-    ignore_errors: yes
-
-  - name: copying to local system
-    copy: 
-      content: "{{ aws_clo }}"
-      dest: "/home/rajpandey111/aws_cloud/result1.txt"
-    delegate_to: localhost
-    ignore_errors: yes
-
-  - name: copying to local system
-    copy:
-      content: "{{ httpd_report }}"
-      dest: "/home/rajpandey111/aws_cloud/result1.txt"
-    delegate_to: localhost
-    ignore_errors: yes
   - name: mail sending using mail module
     mail: 
       host: smtp.gmail.com

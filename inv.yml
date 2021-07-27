@@ -1,0 +1,14 @@
+---
+- name: Play to get hostname
+  hosts: localhost
+  tasks:
+    - command: " ls /home/rajpandey111/aws"
+      register: output
+    - debug:
+       var: output
+
+    - name: printing hostname
+      debug: 
+        var: inventory_hostname
+        
+

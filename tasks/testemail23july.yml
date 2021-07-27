@@ -1,0 +1,23 @@
+---
+- name: Install and check
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: installing firewalld
+      yum:
+        name: firewalld
+        state: present
+      register: httpd_report
+
+    - name: Finding files in /home/rajpandey111
+      command: "ls /home/rajpandey111/aws"
+      register: aws_clo
+
+    - name: copying to local system
+      copy: 
+        src: "{{ item }}" 
+        dest: /home/rajpandey111/aws_cloud/result2.txt
+      with_items: 
+       - aws_clo
+       - httpd_report
+

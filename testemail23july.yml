@@ -1,0 +1,26 @@
+---
+- name: try for block and loop for cpying
+  hosts: dockerhost
+  become: yes
+  tasks:
+  - block:
+    - name: installing firewalld
+      yum:
+        name: firewalld
+        state: present
+      register: httpd_report
+
+    - name: Finding files in /home/rajpandey111
+      command: "ls /home/rajpandey111/aws_cud"
+      register: aws_clo
+
+    - name: copying to local system
+      copy:
+        content: "{ {item }}"
+        dest: "/home/rajpandey111/aws_cloud/result2.txt"
+      loop:
+       - aws_clo
+       - httpd_report
+      delegate_to: localhost
+    ignore_errors: yes
+
